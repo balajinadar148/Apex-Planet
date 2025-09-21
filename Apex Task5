@@ -1,0 +1,1501 @@
+HTML
+
+<?php require_once('header.php'); ?>
+
+<?php
+$statement = $pdo->prepare("SELECT * FROM tbl_settings WHERE id=1");
+$statement->execute();
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+foreach ($result as $row)
+{
+    $cta_title = $row['cta_title'];
+    $cta_content = $row['cta_content'];
+    $cta_read_more_text = $row['cta_read_more_text'];
+    $cta_read_more_url = $row['cta_read_more_url'];
+    $cta_photo = $row['cta_photo'];
+    $featured_product_title = $row['featured_product_title'];
+    $featured_product_subtitle = $row['featured_product_subtitle'];
+    $latest_product_title = $row['latest_product_title'];
+    $latest_product_subtitle = $row['latest_product_subtitle'];
+    $popular_product_title = $row['popular_product_title'];
+    $popular_product_subtitle = $row['popular_product_subtitle'];
+    $total_featured_product_home = $row['total_featured_product_home'];
+    $total_latest_product_home = $row['total_latest_product_home'];
+    $total_popular_product_home = $row['total_popular_product_home'];
+    $home_service_on_off = $row['home_service_on_off'];
+    $home_welcome_on_off = $row['home_welcome_on_off'];
+    $home_featured_product_on_off = $row['home_featured_product_on_off'];
+    $home_latest_product_on_off = $row['home_latest_product_on_off'];
+    $home_popular_product_on_off = $row['home_popular_product_on_off'];
+
+}
+
+
+?>
+
+<div id="bootstrap-touch-slider" class="carousel bs-slider fade control-round indicators-line" data-ride="carousel" data-pause="hover" data-interval="false" >
+
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <?php
+        $i=0;
+        $statement = $pdo->prepare("SELECT * FROM tbl_slider");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
+        foreach ($result as $row) {            
+            ?>
+            <li data-target="#bootstrap-touch-slider" data-slide-to="<?php echo $i; ?>" <?php if($i==0) {echo 'class="active"';} ?>></li>
+            <?php
+            $i++;
+        }
+        ?>
+    </ol>
+
+    <!-- Wrapper For Slides -->
+    <div class="carousel-inner" role="listbox">
+
+        <?php
+        $i=0;
+        $statement = $pdo->prepare("SELECT * FROM tbl_slider");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
+        foreach ($result as $row) {            
+            ?>
+            <div class="item <?php if($i==0) {echo 'active';} ?>" style="background-image:url(assets/uploads/<?php echo $row['photo']; ?>);">
+                <div class="bs-slider-overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="slide-text <?php if($row['position'] == 'Left') {echo 'slide_style_left';} elseif($row['position'] == 'Center') {echo 'slide_style_center';} elseif($row['position'] == 'Right') {echo 'slide_style_right';} ?>">
+                            <h1 data-animation="animated <?php if($row['position'] == 'Left') {echo 'zoomInLeft';} elseif($row['position'] == 'Center') {echo 'flipInX';} elseif($row['position'] == 'Right') {echo 'zoomInRight';} ?>"><?php echo $row['heading']; ?></h1>
+                            <p data-animation="animated <?php if($row['position'] == 'Left') {echo 'fadeInLeft';} elseif($row['position'] == 'Center') {echo 'fadeInDown';} elseif($row['position'] == 'Right') {echo 'fadeInRight';} ?>"><?php echo nl2br($row['content']); ?></p>
+                            <a href="<?php echo $row['button_url']; ?>" target="_blank"  class="btn btn-primary" data-animation="animated <?php if($row['position'] == 'Left') {echo 'fadeInLeft';} elseif($row['position'] == 'Center') {echo 'fadeInDown';} elseif($row['position'] == 'Right') {echo 'fadeInRight';} ?>"><?php echo $row['button_text']; ?></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+            $i++;
+        }
+        ?>
+    </div>
+
+    <!-- Slider Left Control -->
+    <a class="left carousel-control" href="#bootstrap-touch-slider" role="button" data-slide="prev">
+        <span class="fa fa-angle-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+
+    <!-- Slider Right Control -->
+    <a class="right carousel-control" href="#bootstrap-touch-slider" role="button" data-slide="next">
+        <span class="fa fa-angle-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+
+</div>
+
+
+<?php if($home_service_on_off == 1): ?>
+<div class="service bg-gray">
+    <div class="container">
+        <div class="row">
+            <?php
+                $statement = $pdo->prepare("SELECT * FROM tbl_service");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
+                foreach ($result as $row) {
+                    ?>
+                    <div class="col-md-4">
+                        <div class="item">
+                            <div class="photo"><img src="assets/uploads/<?php echo $row['photo']; ?>" width="150px" alt="<?php echo $row['title']; ?>"></div>
+                            <h3><?php echo $row['title']; ?></h3>
+                            <p>
+                                <?php echo nl2br($row['content']); ?>
+                            </p>
+                        </div>
+                    </div>
+                    <?php
+                }
+            ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<?php if($home_featured_product_on_off == 1): ?>
+<div class="product pt_70 pb_70">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="headline">
+                    <h2><?php echo $featured_product_title; ?></h2>
+                    <h3><?php echo $featured_product_subtitle; ?></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="product-carousel">
+                    
+                    <?php
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? LIMIT ".$total_featured_product_home);
+                    $statement->execute(array(1,1));
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
+                    foreach ($result as $row) {
+                        ?>
+                        <div class="item">
+                            <div class="thumb">
+                                <div class="photo" style="background-image:url(assets/uploads/<?php echo $row['p_featured_photo']; ?>);"></div>
+                                <div class="overlay"></div>
+                            </div>
+                            <div class="text">
+                                <h3><a href="product.php?id=<?php echo $row['p_id']; ?>"><?php echo $row['p_name']; ?></a></h3>
+                                <h4>
+                                    $<?php echo $row['p_current_price']; ?> 
+                                    <?php if($row['p_old_price'] != ''): ?>
+                                    <del>
+                                        $<?php echo $row['p_old_price']; ?>
+                                    </del>
+                                    <?php endif; ?>
+                                </h4>
+                                <div class="rating">
+                                    <?php
+                                    $t_rating = 0;
+                                    $statement1 = $pdo->prepare("SELECT * FROM tbl_rating WHERE p_id=?");
+                                    $statement1->execute(array($row['p_id']));
+                                    $tot_rating = $statement1->rowCount();
+                                    if($tot_rating == 0) {
+                                        $avg_rating = 0;
+                                    } else {
+                                        $result1 = $statement1->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($result1 as $row1) {
+                                            $t_rating = $t_rating + $row1['rating'];
+                                        }
+                                        $avg_rating = $t_rating / $tot_rating;
+                                    }
+                                    ?>
+                                    <?php
+                                    if($avg_rating == 0) {
+                                        echo '';
+                                    }
+                                    elseif($avg_rating == 1.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        ';
+                                    } 
+                                    elseif($avg_rating == 2.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        ';
+                                    }
+                                    elseif($avg_rating == 3.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        ';
+                                    }
+                                    elseif($avg_rating == 4.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                        ';
+                                    }
+                                    else {
+                                        for($i=1;$i<=5;$i++) {
+                                            ?>
+                                            <?php if($i>$avg_rating): ?>
+                                                <i class="fa fa-star-o"></i>
+                                            <?php else: ?>
+                                                <i class="fa fa-star"></i>
+                                            <?php endif; ?>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </div>
+
+                                <?php if($row['p_qty'] == 0): ?>
+                                    <div class="out-of-stock">
+                                        <div class="inner">
+                                            Out Of Stock
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <p><a href="product.php?id=<?php echo $row['p_id']; ?>"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+
+<?php if($home_latest_product_on_off == 1): ?>
+<div class="product bg-gray pt_70 pb_30">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="headline">
+                    <h2><?php echo $latest_product_title; ?></h2>
+                    <h3><?php echo $latest_product_subtitle; ?></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="product-carousel">
+
+                    <?php
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY p_id DESC LIMIT ".$total_latest_product_home);
+                    $statement->execute(array(1));
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
+                    foreach ($result as $row) {
+                        ?>
+                        <div class="item">
+                            <div class="thumb">
+                                <div class="photo" style="background-image:url(assets/uploads/<?php echo $row['p_featured_photo']; ?>);"></div>
+                                <div class="overlay"></div>
+                            </div>
+                            <div class="text">
+                                <h3><a href="product.php?id=<?php echo $row['p_id']; ?>"><?php echo $row['p_name']; ?></a></h3>
+                                <h4>
+                                    $<?php echo $row['p_current_price']; ?> 
+                                    <?php if($row['p_old_price'] != ''): ?>
+                                    <del>
+                                        $<?php echo $row['p_old_price']; ?>
+                                    </del>
+                                    <?php endif; ?>
+                                </h4>
+                                <div class="rating">
+                                    <?php
+                                    $t_rating = 0;
+                                    $statement1 = $pdo->prepare("SELECT * FROM tbl_rating WHERE p_id=?");
+                                    $statement1->execute(array($row['p_id']));
+                                    $tot_rating = $statement1->rowCount();
+                                    if($tot_rating == 0) {
+                                        $avg_rating = 0;
+                                    } else {
+                                        $result1 = $statement1->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($result1 as $row1) {
+                                            $t_rating = $t_rating + $row1['rating'];
+                                        }
+                                        $avg_rating = $t_rating / $tot_rating;
+                                    }
+                                    ?>
+                                    <?php
+                                    if($avg_rating == 0) {
+                                        echo '';
+                                    }
+                                    elseif($avg_rating == 1.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        ';
+                                    } 
+                                    elseif($avg_rating == 2.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        ';
+                                    }
+                                    elseif($avg_rating == 3.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        ';
+                                    }
+                                    elseif($avg_rating == 4.5) {
+                                        echo '
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                        ';
+                                    }
+                                    else {
+                                        for($i=1;$i<=5;$i++) {
+                                            ?>
+                                            <?php if($i>$avg_rating): ?>
+                                                <i class="fa fa-star-o"></i>
+                                            <?php else: ?>
+                                                <i class="fa fa-star"></i>
+                                            <?php endif; ?>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                                <?php if($row['p_qty'] == 0): ?>
+                                    <div class="out-of-stock">
+                                        <div class="inner">
+                                            Out Of Stock
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <p><a href="product.php?id=<?php echo $row['p_id']; ?>"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+
+<?php if($home_popular_product_on_off == 1): ?>
+<div class="product pt_70 pb_70">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="headline">
+                    <h2><?php echo $popular_product_title; ?></h2>
+                    <h3><?php echo $popular_product_subtitle; ?></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="product-carousel">
+
+                    <?php
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY p_total_view DESC LIMIT ".$total_popular_product_home);
+                    $statement->execute(array(1));
+                    $result = $statement->f
+
+CSS
+
+.skin-blue .main-header .navbar {
+  background-color: #3c8dbc;
+}
+.skin-blue .main-header .navbar .nav > li > a {
+  color: #fff;
+}
+.skin-blue .main-header .navbar .nav > li > a:hover,
+.skin-blue .main-header .navbar .nav > li > a:active,
+.skin-blue .main-header .navbar .nav > li > a:focus,
+.skin-blue .main-header .navbar .nav .open > a,
+.skin-blue .main-header .navbar .nav .open > a:hover,
+.skin-blue .main-header .navbar .nav .open > a:focus,
+.skin-blue .main-header .navbar .nav > .active > a {
+  background: rgba(0, 0, 0, 0.1);
+  color: #f6f6f6;
+}
+.skin-blue .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+  color: #f6f6f6;
+  background: rgba(0, 0, 0, 0.1);
+}
+.skin-blue .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+  background-color: #367fa9;
+}
+@media (max-width: 767px) {
+  .skin-blue .main-header .navbar .dropdown-menu li.divider {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .skin-blue .main-header .navbar .dropdown-menu li a {
+    color: #fff;
+  }
+  .skin-blue .main-header .navbar .dropdown-menu li a:hover {
+    background: #367fa9;
+  }
+}
+.skin-blue .main-header .logo {
+  background-color: #367fa9;
+  color: #fff;
+  border-bottom: 0 solid transparent;
+}
+.skin-blue .main-header .logo:hover {
+  background-color: #357ca5;
+}
+.skin-blue .main-header li.user-header {
+  background-color: #3c8dbc;
+}
+.skin-blue .content-header {
+  background: transparent;
+}
+.skin-blue .wrapper,
+.skin-blue .main-sidebar,
+.skin-blue .left-side {
+  /* background-color: #222d32; */
+  background-color: #232f3e;
+}
+.skin-blue .user-panel > .info,
+.skin-blue .user-panel > .info > a {
+  color: #fff;
+}
+.skin-blue .sidebar-menu > li.header {
+  color: #4b646f;
+  background: #1a2226;
+}
+.skin-blue .sidebar-menu > li > a {
+  border-left: 3px solid transparent;
+}
+.skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu > li.active > a {
+  color: #fff;
+  background: #1e282c;
+  border-left-color: #3c8dbc;
+}
+.skin-blue .sidebar-menu > li > .treeview-menu {
+  margin: 0 1px;
+  background: #2c3b41;
+}
+.skin-blue .sidebar a {
+  color: #b8c7ce;
+}
+.skin-blue .sidebar a:hover {
+  text-decoration: none;
+}
+.skin-blue .treeview-menu > li > a {
+  color: #8aa4af;
+}
+.skin-blue .treeview-menu > li.active > a,
+.skin-blue .treeview-menu > li > a:hover {
+  color: #fff;
+}
+.skin-blue .sidebar-form {
+  border-radius: 3px;
+  border: 1px solid #374850;
+  margin: 10px 10px;
+}
+.skin-blue .sidebar-form input[type="text"],
+.skin-blue .sidebar-form .btn {
+  box-shadow: none;
+  background-color: #374850;
+  border: 1px solid transparent;
+  height: 35px;
+}
+.skin-blue .sidebar-form input[type="text"] {
+  color: #666;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+}
+.skin-blue .sidebar-form input[type="text"]:focus,
+.skin-blue .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  background-color: #fff;
+  color: #666;
+}
+.skin-blue .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  border-left-color: #fff;
+}
+.skin-blue .sidebar-form .btn {
+  color: #999;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
+}
+.skin-blue.layout-top-nav .main-header > .logo {
+  background-color: #3c8dbc;
+  color: #fff;
+  border-bottom: 0 solid transparent;
+}
+.skin-blue.layout-top-nav .main-header > .logo:hover {
+  background-color: #3b8ab8;
+}
+.skin-blue-light .main-header .navbar {
+  background-color: #3c8dbc;
+}
+.skin-blue-light .main-header .navbar .nav > li > a {
+  color: #fff;
+}
+.skin-blue-light .main-header .navbar .nav > li > a:hover,
+.skin-blue-light .main-header .navbar .nav > li > a:active,
+.skin-blue-light .main-header .navbar .nav > li > a:focus,
+.skin-blue-light .main-header .navbar .nav .open > a,
+.skin-blue-light .main-header .navbar .nav .open > a:hover,
+.skin-blue-light .main-header .navbar .nav .open > a:focus,
+.skin-blue-light .main-header .navbar .nav > .active > a {
+  background: rgba(0, 0, 0, 0.1);
+  color: #f6f6f6;
+}
+.skin-blue-light .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-blue-light .main-header .navbar .sidebar-toggle:hover {
+  color: #f6f6f6;
+  background: rgba(0, 0, 0, 0.1);
+}
+.skin-blue-light .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-blue-light .main-header .navbar .sidebar-toggle:hover {
+  background-color: #367fa9;
+}
+@media (max-width: 767px) {
+  .skin-blue-light .main-header .navbar .dropdown-menu li.divider {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .skin-blue-light .main-header .navbar .dropdown-menu li a {
+    color: #fff;
+  }
+  .skin-blue-light .main-header .navbar .dropdown-menu li a:hover {
+    background: #367fa9;
+  }
+}
+.skin-blue-light .main-header .logo {
+  background-color: #3c8dbc;
+  color: #fff;
+  border-bottom: 0 solid transparent;
+}
+.skin-blue-light .main-header .logo:hover {
+  background-color: #3b8ab8;
+}
+.skin-blue-light .main-header li.user-header {
+  background-color: #3c8dbc;
+}
+.skin-blue-light .content-header {
+  background: transparent;
+}
+.skin-blue-light .wrapper,
+.skin-blue-light .main-sidebar,
+.skin-blue-light .left-side {
+  background-color: #f9fafc;
+}
+.skin-blue-light .content-wrapper,
+.skin-blue-light .main-footer {
+  border-left: 1px solid #d2d6de;
+}
+.skin-blue-light .user-panel > .info,
+.skin-blue-light .user-panel > .info > a {
+  color: #444;
+}
+.skin-blue-light .sidebar-menu > li {
+  -webkit-transition: border-left-color 0.3s ease;
+  -o-transition: border-left-color 0.3s ease;
+  transition: border-left-color 0.3s ease;
+}
+.skin-blue-light .sidebar-menu > li.header {
+  color: #848484;
+  background: #f9fafc;
+}
+.skin-blue-light .sidebar-menu > li > a {
+  border-left: 3px solid transparent;
+  font-weight: 600;
+}
+.skin-blue-light .sidebar-menu > li:hover > a,
+.skin-blue-light .sidebar-menu > li.active > a {
+  color: #000;
+  background: #f4f4f5;
+}
+.skin-blue-light .sidebar-menu > li.active {
+  border-left-color: #3c8dbc;
+}
+.skin-blue-light .sidebar-menu > li.active > a {
+  font-weight: 600;
+}
+.skin-blue-light .sidebar-menu > li > .treeview-menu {
+  background: #f4f4f5;
+}
+.skin-blue-light .sidebar a {
+  color: #444;
+}
+.skin-blue-light .sidebar a:hover {
+  text-decoration: none;
+}
+.skin-blue-light .treeview-menu > li > a {
+  color: #777;
+}
+.skin-blue-light .treeview-menu > li.active > a,
+.skin-blue-light .treeview-menu > li > a:hover {
+  color: #000;
+}
+.skin-blue-light .treeview-menu > li.active > a {
+  font-weight: 600;
+}
+.skin-blue-light .sidebar-form {
+  border-radius: 3px;
+  border: 1px solid #d2d6de;
+  margin: 10px 10px;
+}
+.skin-blue-light .sidebar-form input[type="text"],
+.skin-blue-light .sidebar-form .btn {
+  box-shadow: none;
+  background-color: #fff;
+  border: 1px solid transparent;
+  height: 35px;
+}
+.skin-blue-light .sidebar-form input[type="text"] {
+  color: #666;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+}
+.skin-blue-light .sidebar-form input[type="text"]:focus,
+.skin-blue-light
+  .sidebar-form
+  input[type="text"]:focus
+  + .input-group-btn
+  .btn {
+  background-color: #fff;
+  color: #666;
+}
+.skin-blue-light
+  .sidebar-form
+  input[type="text"]:focus
+  + .input-group-btn
+  .btn {
+  border-left-color: #fff;
+}
+.skin-blue-light .sidebar-form .btn {
+  color: #999;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
+}
+@media (min-width: 768px) {
+  .skin-blue-light.sidebar-mini.sidebar-collapse
+    .sidebar-menu
+    > li
+    > .treeview-menu {
+    border-left: 1px solid #d2d6de;
+  }
+}
+.skin-blue-light .main-footer {
+  border-top-color: #d2d6de;
+}
+.skin-blue.layout-top-nav .main-header > .logo {
+  background-color: #3c8dbc;
+  color: #fff;
+  border-bottom: 0 solid transparent;
+}
+.skin-blue.layout-top-nav .main-header > .logo:hover {
+  background-color: #3b8ab8;
+}
+.skin-black .main-header {
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.skin-black .main-header .navbar-toggle {
+  color: #333;
+}
+.skin-black .main-header .navbar-brand {
+  color: #333;
+  border-right: 1px solid #eee;
+}
+.skin-black .main-header .navbar {
+  background-color: #fff;
+}
+.skin-black .main-header .navbar .nav > li > a {
+  color: #333;
+}
+.skin-black .main-header .navbar .nav > li > a:hover,
+.skin-black .main-header .navbar .nav > li > a:active,
+.skin-black .main-header .navbar .nav > li > a:focus,
+.skin-black .main-header .navbar .nav .open > a,
+.skin-black .main-header .navbar .nav .open > a:hover,
+.skin-black .main-header .navbar .nav .open > a:focus,
+.skin-black .main-header .navbar .nav > .active > a {
+  background: #fff;
+  color: #999;
+}
+.skin-black .main-header .navbar .sidebar-toggle {
+  color: #333;
+}
+.skin-black .main-header .navbar .sidebar-toggle:hover {
+  color: #999;
+  background: #fff;
+}
+.skin-black .main-header .navbar > .sidebar-toggle {
+  color: #333;
+  border-right: 1px solid #eee;
+}
+.skin-black .main-header .navbar .navbar-nav > li > a {
+  border-right: 1px solid #eee;
+}
+.skin-black .main-header .navbar .navbar-custom-menu .navbar-nav > li > a,
+.skin-black .main-header .navbar .navbar-right > li > a {
+  border-left: 1px solid #eee;
+  border-right-width: 0;
+}
+.skin-black .main-header > .logo {
+  background-color: #fff;
+  color: #333;
+  border-bottom: 0 solid transparent;
+  border-right: 1px solid #eee;
+}
+.skin-black .main-header > .logo:hover {
+  background-color: #fcfcfc;
+}
+@media (max-width: 767px) {
+  .skin-black .main-header > .logo {
+    background-color: #222;
+    color: #fff;
+    border-bottom: 0 solid transparent;
+    border-right: none;
+  }
+  .skin-black .main-header > .logo:hover {
+    background-color: #1f1f1f;
+  }
+}
+.skin-black .main-header li.user-header {
+  background-color: #222;
+}
+.skin-black .content-header {
+  background: transparent;
+  box-shadow: none;
+}
+.skin-black .wrapper,
+.skin-black .main-sidebar,
+.skin-black .left-side {
+  background-color: #222d32;
+}
+.skin-black .user-panel > .info,
+.skin-black .user-panel > .info > a {
+  color: #fff;
+}
+.skin-black .sidebar-menu > li.header {
+  color: #4b646f;
+  background: #1a2226;
+}
+.skin-black .sidebar-menu > li > a {
+  border-left: 3px solid transparent;
+}
+.skin-black .sidebar-menu > li:hover > a,
+.skin-black .sidebar-menu > li.active > a {
+  color: #fff;
+  background: #1e282c;
+  border-left-color: #fff;
+}
+.skin-black .sidebar-menu > li > .treeview-menu {
+  margin: 0 1px;
+  background: #2c3b41;
+}
+.skin-black .sidebar a {
+  color: #b8c7ce;
+}
+.skin-black .sidebar a:hover {
+  text-decoration: none;
+}
+.skin-black .treeview-menu > li > a {
+  color: #8aa4af;
+}
+.skin-black .treeview-menu > li.active > a,
+.skin-black .treeview-menu > li > a:hover {
+  color: #fff;
+}
+.skin-black .sidebar-form {
+  border-radius: 3px;
+  border: 1px solid #374850;
+  margin: 10px 10px;
+}
+.skin-black .sidebar-form input[type="text"],
+.skin-black .sidebar-form .btn {
+  box-shadow: none;
+  background-color: #374850;
+  border: 1px solid transparent;
+  height: 35px;
+}
+.skin-black .sidebar-form input[type="text"] {
+  color: #666;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+}
+.skin-black .sidebar-form input[type="text"]:focus,
+.skin-black .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  background-color: #fff;
+  color: #666;
+}
+.skin-black .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  border-left-color: #fff;
+}
+.skin-black .sidebar-form .btn {
+  color: #999;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
+}
+.skin-black .pace .pace-progress {
+  background: #222;
+}
+.skin-black .pace .pace-activity {
+  border-top-color: #222;
+  border-left-color: #222;
+}
+.skin-black-light .main-header {
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.skin-black-light .main-header .navbar-toggle {
+  color: #333;
+}
+.skin-black-light .main-header .navbar-brand {
+  color: #333;
+  border-right: 1px solid #eee;
+}
+.skin-black-light .main-header .navbar {
+  background-color: #fff;
+}
+.skin-black-light .main-header .navbar .nav > li > a {
+  color: #333;
+}
+.skin-black-light .main-header .navbar .nav > li > a:hover,
+.skin-black-light .main-header .navbar .nav > li > a:active,
+.skin-black-light .main-header .navbar .nav > li > a:focus,
+.skin-black-light .main-header .navbar .nav .open > a,
+.skin-black-light .main-header .navbar .nav .open > a:hover,
+.skin-black-light .main-header .navbar .nav .open > a:focus,
+.skin-black-light .main-header .navbar .nav > .active > a {
+  background: #fff;
+  color: #999;
+}
+.skin-black-light .main-header .navbar .sidebar-toggle {
+  color: #333;
+}
+.skin-black-light .main-header .navbar .sidebar-toggle:hover {
+  color: #999;
+  background: #fff;
+}
+.skin-black-light .main-header .navbar > .sidebar-toggle {
+  color: #333;
+  border-right: 1px solid #eee;
+}
+.skin-black-light .main-header .navbar .navbar-nav > li > a {
+  border-right: 1px solid #eee;
+}
+.skin-black-light .main-header .navbar .navbar-custom-menu .navbar-nav > li > a,
+.skin-black-light .main-header .navbar .navbar-right > li > a {
+  border-left: 1px solid #eee;
+  border-right-width: 0;
+}
+.skin-black-light .main-header > .logo {
+  background-color: #fff;
+  color: #333;
+  border-bottom: 0 solid transparent;
+  border-right: 1px solid #eee;
+}
+.skin-black-light .main-header > .logo:hover {
+  background-color: #fcfcfc;
+}
+@media (max-width: 767px) {
+  .skin-black-light .main-header > .logo {
+    background-color: #222;
+    color: #fff;
+    border-bottom: 0 solid transparent;
+    border-right: none;
+  }
+  .skin-black-light .main-header > .logo:hover {
+    background-color: #1f1f1f;
+  }
+}
+.skin-black-light .main-header li.user-header {
+  background-color: #222;
+}
+.skin-black-light .content-header {
+  background: transparent;
+  box-shadow: none;
+}
+.skin-black-light .wrapper,
+.skin-black-light .main-sidebar,
+.skin-black-light .left-side {
+  background-color: #f9fafc;
+}
+.skin-black-light .content-wrapper,
+.skin-black-light .main-footer {
+  border-left: 1px solid #d2d6de;
+}
+.skin-black-light .user-panel > .info,
+.skin-black-light .user-panel > .info > a {
+  color: #444;
+}
+.skin-black-light .sidebar-menu > li {
+  -webkit-transition: border-left-color 0.3s ease;
+  -o-transition: border-left-color 0.3s ease;
+  transition: border-left-color 0.3s ease;
+}
+.skin-black-light .sidebar-menu > li.header {
+  color: #848484;
+  background: #f9fafc;
+}
+.skin-black-light .sidebar-menu > li > a {
+  border-left: 3px solid transparent;
+  font-weight: 600;
+}
+.skin-black-light .sidebar-menu > li:hover > a,
+.skin-black-light .sidebar-menu > li.active > a {
+  color: #000;
+  background: #f4f4f5;
+}
+.skin-black-light .sidebar-menu > li.active {
+  border-left-color: #fff;
+}
+.skin-black-light .sidebar-menu > li.active > a {
+  font-weight: 600;
+}
+.skin-black-light .sidebar-menu > li > .treeview-menu {
+  background: #f4f4f5;
+}
+.skin-black-light .sidebar a {
+  color: #444;
+}
+.skin-black-light .sidebar a:hover {
+  text-decoration: none;
+}
+.skin-black-light .treeview-menu > li > a {
+  color: #777;
+}
+.skin-black-light .treeview-menu > li.active > a,
+.skin-black-light .treeview-menu > li > a:hover {
+  color: #000;
+}
+.skin-black-light .treeview-menu > li.active > a {
+  font-weight: 600;
+}
+.skin-black-light .sidebar-form {
+  border-radius: 3px;
+  border: 1px solid #d2d6de;
+  margin: 10px 10px;
+}
+.skin-black-light .sidebar-form input[type="text"],
+.skin-black-light .sidebar-form .btn {
+  box-shadow: none;
+  background-color: #fff;
+  border: 1px solid transparent;
+  height: 35px;
+}
+.skin-black-light .sidebar-form input[type="text"] {
+  color: #666;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+}
+.skin-black-light .sidebar-form input[type="text"]:focus,
+.skin-black-light
+  .sidebar-form
+  input[type="text"]:focus
+  + .input-group-btn
+  .btn {
+  background-color: #fff;
+  color: #666;
+}
+.skin-black-light
+  .sidebar-form
+  input[type="text"]:focus
+  + .input-group-btn
+  .btn {
+  border-left-color: #fff;
+}
+.skin-black-light .sidebar-form .btn {
+  color: #999;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
+}
+@media (min-width: 768px) {
+  .skin-black-light.sidebar-mini.sidebar-collapse
+    .sidebar-menu
+    > li
+    > .treeview-menu {
+    border-left: 1px solid #d2d6de;
+  }
+}
+.skin-green .main-header .navbar {
+  background-color: #00a65a;
+}
+.skin-green .main-header .navbar .nav > li > a {
+  color: #fff;
+}
+.skin-green .main-header .navbar .nav > li > a:hover,
+.skin-green .main-header .navbar .nav > li > a:active,
+.skin-green .main-header .navbar .nav > li > a:focus,
+.skin-green .main-header .navbar .nav .open > a,
+.skin-green .main-header .navbar .nav .open > a:hover,
+.skin-green .main-header .navbar .nav .open > a:focus,
+.skin-green .main-header .navbar .nav > .active > a {
+  background: rgba(0, 0, 0, 0.1);
+  color: #f6f6f6;
+}
+.skin-green .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-green .main-header .navbar .sidebar-toggle:hover {
+  color: #f6f6f6;
+  background: rgba(0, 0, 0, 0.1);
+}
+.skin-green .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-green .main-header .navbar .sidebar-toggle:hover {
+  background-color: #008d4c;
+}
+@media (max-width: 767px) {
+  .skin-green .main-header .navbar .dropdown-menu li.divider {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .skin-green .main-header .navbar .dropdown-menu li a {
+    color: #fff;
+  }
+  .skin-green .main-header .navbar .dropdown-menu li a:hover {
+    background: #008d4c;
+  }
+}
+.skin-green .main-header .logo {
+  background-color: #008d4c;
+  color: #fff;
+  border-bottom: 0 solid transparent;
+}
+.skin-green .main-header .logo:hover {
+  background-color: #008749;
+}
+.skin-green .main-header li.user-header {
+  background-color: #00a65a;
+}
+.skin-green .content-header {
+  background: transparent;
+}
+.skin-green .wrapper,
+.skin-green .main-sidebar,
+.skin-green .left-side {
+  background-color: #222d32;
+}
+.skin-green .user-panel > .info,
+.skin-green .user-panel > .info > a {
+  color: #fff;
+}
+.skin-green .sidebar-menu > li.header {
+  color: #4b646f;
+  background: #1a2226;
+}
+.skin-green .sidebar-menu > li > a {
+  border-left: 3px solid transparent;
+}
+.skin-green .sidebar-menu > li:hover > a,
+.skin-green .sidebar-menu > li.active > a {
+  color: #fff;
+  background: #1e282c;
+  border-left-color: #00a65a;
+}
+.skin-green .sidebar-menu > li > .treeview-menu {
+  margin: 0 1px;
+  background: #2c3b41;
+}
+.skin-green .sidebar a {
+  color: #b8c7ce;
+}
+.skin-green .sidebar a:hover {
+  text-decoration: none;
+}
+.skin-green .treeview-menu > li > a {
+  color: #8aa4af;
+}
+.skin-green .treeview-menu > li.active > a,
+.skin-green .treeview-menu > li > a:hover {
+  color: #fff;
+}
+.skin-green .sidebar-form {
+  border-radius: 3px;
+  border: 1px solid #374850;
+  margin: 10px 10px;
+}
+.skin-green .sidebar-form input[type="text"],
+.skin-green .sidebar-form .btn {
+  box-shadow: none;
+  background-color: #374850;
+  border: 1px solid transparent;
+  height: 35px;
+}
+.skin-green .sidebar-form input[type="text"] {
+  color: #666;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+}
+.skin-green .sidebar-form input[type="text"]:focus,
+.skin-green .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  background-color: #fff;
+  color: #666;
+}
+.skin-green .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  border-left-color: #fff;
+}
+.skin-green .sidebar-form .btn {
+  color: #999;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
+}
+.skin
+
+JAVASCRIPT 
+
+var my_skins = [
+    "skin-blue",
+    "skin-black",
+    "skin-red",
+    "skin-yellow",
+    "skin-purple",
+    "skin-green",
+    "skin-blue-light",
+    "skin-black-light",
+    "skin-red-light",
+    "skin-yellow-light",
+    "skin-purple-light",
+    "skin-green-light"
+  ];
+
+  //Create the new tab
+  var tab_pane = $("<div />", {
+    "id": "control-sidebar-theme-demo-options-tab",
+    "class": "tab-pane active"
+  });
+
+  //Create the tab button
+  var tab_button = $("<li />", {"class": "active"})
+      .html("<a href='#control-sidebar-theme-demo-options-tab' data-toggle='tab'>"
+      + "<i class='fa fa-wrench'></i>"
+      + "</a>");
+
+  //Add the tab button to the right sidebar tabs
+  $("[href='#control-sidebar-home-tab']")
+      .parent()
+      .before(tab_button);
+
+  //Create the menu
+  var demo_settings = $("<div />");
+
+  //Layout options
+  demo_settings.append(
+      "<h4 class='control-sidebar-heading'>"
+      + "Layout Options"
+      + "</h4>"
+        //Fixed layout
+      + "<div class='form-group'>"
+      + "<label class='control-sidebar-subheading'>"
+      + "<input type='checkbox' data-layout='fixed' class='pull-right'/> "
+      + "Fixed layout"
+      + "</label>"
+      + "<p>Activate the fixed layout. You can't use fixed and boxed layouts together</p>"
+      + "</div>"
+        //Boxed layout
+      + "<div class='form-group'>"
+      + "<label class='control-sidebar-subheading'>"
+      + "<input type='checkbox' data-layout='layout-boxed'class='pull-right'/> "
+      + "Boxed Layout"
+      + "</label>"
+      + "<p>Activate the boxed layout</p>"
+      + "</div>"
+        //Sidebar Toggle
+      + "<div class='form-group'>"
+      + "<label class='control-sidebar-subheading'>"
+      + "<input type='checkbox' data-layout='sidebar-collapse' class='pull-right'/> "
+      + "Toggle Sidebar"
+      + "</label>"
+      + "<p>Toggle the left sidebar's state (open or collapse)</p>"
+      + "</div>"
+        //Sidebar mini expand on hover toggle
+      + "<div class='form-group'>"
+      + "<label class='control-sidebar-subheading'>"
+      + "<input type='checkbox' data-enable='expandOnHover' class='pull-right'/> "
+      + "Sidebar Expand on Hover"
+      + "</label>"
+      + "<p>Let the sidebar mini expand on hover</p>"
+      + "</div>"
+        //Control Sidebar Toggle
+      + "<div class='form-group'>"
+      + "<label class='control-sidebar-subheading'>"
+      + "<input type='checkbox' data-controlsidebar='control-sidebar-open' class='pull-right'/> "
+      + "Toggle Right Sidebar Slide"
+      + "</label>"
+      + "<p>Toggle between slide over content and push content effects</p>"
+      + "</div>"
+        //Control Sidebar Skin Toggle
+      + "<div class='form-group'>"
+      + "<label class='control-sidebar-subheading'>"
+      + "<input type='checkbox' data-sidebarskin='toggle' class='pull-right'/> "
+      + "Toggle Right Sidebar Skin"
+      + "</label>"
+      + "<p>Toggle between dark and light skins for the right sidebar</p>"
+      + "</div>"
+  );
+  var skins_list = $("<ul />", {"class": 'list-unstyled clearfix'});
+
+  //Dark sidebar skins
+  var skin_blue =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-blue' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px; background: #367fa9;'></span><span class='bg-light-blue' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #222d32;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin'>Blue</p>");
+  skins_list.append(skin_blue);
+  var skin_black =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-black' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div style='box-shadow: 0 0 2px rgba(0,0,0,0.1)' class='clearfix'><span style='display:block; width: 20%; float: left; height: 7px; background: #fefefe;'></span><span style='display:block; width: 80%; float: left; height: 7px; background: #fefefe;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #222;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin'>Black</p>");
+  skins_list.append(skin_black);
+  var skin_purple =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-purple' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-purple-active'></span><span class='bg-purple' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #222d32;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin'>Purple</p>");
+  skins_list.append(skin_purple);
+  var skin_green =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-green' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-green-active'></span><span class='bg-green' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #222d32;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin'>Green</p>");
+  skins_list.append(skin_green);
+  var skin_red =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-red' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-red-active'></span><span class='bg-red' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #222d32;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin'>Red</p>");
+  skins_list.append(skin_red);
+  var skin_yellow =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-yellow' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-yellow-active'></span><span class='bg-yellow' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #222d32;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin'>Yellow</p>");
+  skins_list.append(skin_yellow);
+
+  //Light sidebar skins
+  var skin_blue_light =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-blue-light' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px; background: #367fa9;'></span><span class='bg-light-blue' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #f9fafc;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin' style='font-size: 12px'>Blue Light</p>");
+  skins_list.append(skin_blue_light);
+  var skin_black_light =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-black-light' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div style='box-shadow: 0 0 2px rgba(0,0,0,0.1)' class='clearfix'><span style='display:block; width: 20%; float: left; height: 7px; background: #fefefe;'></span><span style='display:block; width: 80%; float: left; height: 7px; background: #fefefe;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #f9fafc;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin' style='font-size: 12px'>Black Light</p>");
+  skins_list.append(skin_black_light);
+  var skin_purple_light =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-purple-light' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-purple-active'></span><span class='bg-purple' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #f9fafc;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin' style='font-size: 12px'>Purple Light</p>");
+  skins_list.append(skin_purple_light);
+  var skin_green_light =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-green-light' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-green-active'></span><span class='bg-green' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #f9fafc;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin' style='font-size: 12px'>Green Light</p>");
+  skins_list.append(skin_green_light);
+  var skin_red_light =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-red-light' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-red-active'></span><span class='bg-red' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #f9fafc;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin' style='font-size: 12px'>Red Light</p>");
+  skins_list.append(skin_red_light);
+  var skin_yellow_light =
+      $("<li />", {style: "float:left; width: 33.33333%; padding: 5px;"})
+          .append("<a href='javascript:void(0);' data-skin='skin-yellow-light' style='display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)' class='clearfix full-opacity-hover'>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 7px;' class='bg-yellow-active'></span><span class='bg-yellow' style='display:block; width: 80%; float: left; height: 7px;'></span></div>"
+          + "<div><span style='display:block; width: 20%; float: left; height: 20px; background: #f9fafc;'></span><span style='display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;'></span></div>"
+          + "</a>"
+          + "<p class='text-center no-margin' style='font-size: 12px;'>Yellow Light</p>");
+  skins_list.append(skin_yellow_light);
+
+  demo_settings.append("<h4 class='control-sidebar-heading'>Skins</h4>");
+  demo_settings.append(skins_list);
+
+  tab_pane.append(demo_settings);
+  $("#control-sidebar-home-tab").after(tab_pane);
+
+  setup();
+
+  /**
+   * Toggles layout classes
+   *
+   * @param String cls the layout class to toggle
+   * @returns void
+   */
+  function change_layout(cls) {
+    $("body").toggleClass(cls);
+    AdminLTE.layout.fixSidebar();
+    //Fix the problem with right sidebar and layout boxed
+    if (cls == "layout-boxed")
+      AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
+    if ($('body').hasClass('fixed') && cls == 'fixed') {
+      AdminLTE.pushMenu.expandOnHover();
+      AdminLTE.layout.activate();
+    }
+    AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
+    AdminLTE.controlSidebar._fix($(".control-sidebar"));
+  }
+
+  /**
+   * Replaces the old skin with the new skin
+   * @param String cls the new skin class
+   * @returns Boolean false to prevent link's default action
+   */
+  function change_skin(cls) {
+    $.each(my_skins, function (i) {
+      $("body").removeClass(my_skins[i]);
+    });
+
+    $("body").addClass(cls);
+    store('skin', cls);
+    return false;
+  }
+
+  /**
+   * Store a new settings in the browser
+   *
+   * @param String name Name of the setting
+   * @param String val Value of the setting
+   * @returns void
+   */
+  function store(name, val) {
+    if (typeof (Storage) !== "undefined") {
+      localStorage.setItem(name, val);
+    } else {
+      window.alert('Please use a modern browser to properly view this template!');
+    }
+  }
+
+  /**
+   * Get a prestored setting
+   *
+   * @param String name Name of of the setting
+   * @returns String The value of the setting | null
+   */
+  function get(name) {
+    if (typeof (Storage) !== "undefined") {
+      return localStorage.getItem(name);
+    } else {
+      window.alert('Please use a modern browser to properly view this template!');
+    }
+  }
+
+  /**
+   * Retrieve default settings and apply them to the template
+   *
+   * @returns void
+   */
+  function setup() {
+    var tmp = get('skin');
+    if (tmp && $.inArray(tmp, my_skins))
+      change_skin(tmp);
+
+    //Add the change skin listener
+    $("[data-skin]").on('click', function (e) {
+      if($(this).hasClass('knob'))
+        return;
+      e.preventDefault();
+      change_skin($(this).data('skin'));
+    });
+
+    //Add the layout manager
+    $("[data-layout]").on('click', function () {
+      change_layout($(this).data('layout'));
+    });
+
+    $("[data-controlsidebar]").on('click', function () {
+      change_layout($(this).data('controlsidebar'));
+      var slide = !AdminLTE.options.controlSidebarOptions.slide;
+      AdminLTE.options.controlSidebarOptions.slide = slide;
+      if (!slide)
+        $('.control-sidebar').removeClass('control-sidebar-open');
+    });
+
+    $("[data-sidebarskin='toggle']").on('click', function () {
+      var sidebar = $(".control-sidebar");
+      if (sidebar.hasClass("control-sidebar-dark")) {
+        sidebar.removeClass("control-sidebar-dark")
+        sidebar.addClass("control-sidebar-light")
+      } else {
+        sidebar.removeClass("control-sidebar-light")
+        sidebar.addClass("control-sidebar-dark")
+      }
+    });
+
+    $("[data-enable='expandOnHover']").on('click', function () {
+      $(this).attr('disabled', true);
+      AdminLTE.pushMenu.expandOnHover();
+      if (!$('body').hasClass('sidebar-collapse'))
+        $("[data-layout='sidebar-collapse']").click();
+    });
+
+    // Reset options
+    if ($('body').hasClass('fixed')) {
+      $("[data-layout='fixed']").attr('checked', 'checked');
+    }
+    if ($('body').hasClass('layout-boxed')) {
+      $("[data-layout='layout-boxed']").attr('checked', 'checked');
+    }
+    if ($('body').hasClass('sidebar-collapse')) {
+      $("[data-layout='sidebar-collapse']").attr('checked', 'checked');
+    }
+
+  }
+})(jQuery, $.AdminLTE);
